@@ -1,1 +1,1 @@
-# Проект "Pimg - Pong"
+# Проект "Ping - Pong"
