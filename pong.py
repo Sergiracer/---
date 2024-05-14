@@ -1,17 +1,22 @@
 from pygame import *
 from random import *
 
+score_1 = 0
+score_2 = 0
+
 font.init()
-lose1 = font.Font(None, 60)
-lose2 = font.Font(None, 60)
+lose = font.Font(None, 60)
 restart = font.Font(None, 30)
+sc = font.Font(None, 40)
 mixer.init()  
 window = display.set_mode((700, 500))
 clock = time.Clock()
 
-lose1 = lose1.render('PLAYER 1 LOSE!', True, (225, 0, 0))
-lose2 = lose2.render('PLAYER 2 LOSE!', True, (225, 0, 0))
+lose1 = lose.render('PLAYER 1 LOSE!', True, (225, 0, 0))
+lose2 = lose.render('PLAYER 2 LOSE!', True, (225, 0, 0))
 restart = restart.render('Press SPACE to retart', True, (225, 0, 0))
+pl1 = sc.render(str(score_1), True, (255, 255, 0))
+pl2 = sc.render(str(score_2), True, (0, 255, 0))
 FPS = 60
 
 display.set_caption('Game')
@@ -46,6 +51,7 @@ player1 = Player("bar1.png", 10, 670, 250, 20, 100)
 player2 = Player("bar2.png", 10, 10, 250, 20, 100)
 ball = GameSprite("ball.png", 10, 300, 250, 40, 40)
 
+
 sp_x = 3
 sp_y = 3
 game = True
@@ -55,12 +61,14 @@ while game:
         if e.type == QUIT:
             game = False
         if e.type == KEYDOWN:
-            if e.key == K_SPACE:
+            if e.key == K_SPACE and finish == True:
                 finish = False
                 sp_x *= -1
-                ball.rect.x = 200
+                ball.rect.x = 350
     if not finish:
         window.blit(bg, (0, 0))
+        window.blit(pl1, (270, 5))
+        window.blit(pl2, (400, 5))
         player1.update1()
         player1.reset()
         ball.reset()
@@ -74,12 +82,16 @@ while game:
             sp_x *= -1
         if ball.rect.x < 0 :
             finish = True
-            window.blit(lose1, (185, 220))
-            window.blit(restart, (220, 465))
+            score_2 += 1
+            pl2 = sc.render(str(score_2), True, (0, 255, 0))
+            window.blit(lose1, (190, 230))
+            window.blit(restart, (250, 465))
         if ball.rect.x > 660 :
             finish = True
-            window.blit(lose2, (185, 220))
-            window.blit(restart, (220, 465))
+            score_1 += 1
+            pl1 = sc.render(str(score_1), True, (255, 255, 0))
+            window.blit(lose2, (190, 230))
+            window.blit(restart, (250, 465))
     
     clock.tick(FPS)
     display.update()
